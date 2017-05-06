@@ -22,10 +22,13 @@ def add_horizontally(coordinates, distance):
     next_latitude = math.asin( math.sin(initial_latitude) *
                 math.cos(proportion) + math.cos(initial_latitude) *
                 math.sin(proportion) * math.cos(BEARING))
+
     next_longitude = initial_longitude + math.atan2( math.sin(BEARING) *
-                math.sin(proportion) - math.sin(initial_latitude) *
+                math.sin(proportion) * math.cos(initial_latitude),
+                math.cos(proportion) - math.sin(initial_latitude) *
                 math.sin(next_latitude))
-    return (math.degress(next_latitude), math.degrees(next_longitude))
+
+    return (math.degrees(next_latitude), math.degrees(next_longitude))
 
 def add_vertically(latitude, distance):
     return latitude + (distance * METER_PROPORTION_LATITUDE)
