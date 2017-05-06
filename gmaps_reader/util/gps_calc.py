@@ -1,6 +1,6 @@
 import math
 
-EARTH_RADIUS = 6378.1 # kilometers
+EARTH_RADIUS = 6378100 # meters
 BEARING = 1.57
 R = EARTH_RADIUS
 METER_PROPORTION_LATITUDE = -0.000008964
@@ -10,7 +10,7 @@ def add_horizontally(coordinates, distance):
         Calcule the new coordinates after adding some distance
         horizontally.
         The coordinates parameter is a tuple with (latitude, longitude).
-        The distance parameter is the distance in kilometers.
+        The distance parameter is the distance in meters.
     """
     initial_latitude, initial_longitude = coordinates
     initial_latitude = math.radians(initial_latitude)
