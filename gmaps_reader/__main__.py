@@ -6,6 +6,8 @@ import sys
 
 N_THREADS = 20
 
+counting = 0
+
 parser = argparse.ArgumentParser(description="Get maps from GoogleMaps")
 parser.add_argument("api", help="Api KEY from Google Maps Static")
 parser.add_argument("--init_lat", type=float, default=0.0,
@@ -34,15 +36,16 @@ lat,lon = _gmaps.gps()
 with ThreadPoolExecutor(max_workers=10) as executor:
     while lat > _gmaps.max_lat:
         while lon < _gmaps.max_lon:
-            if COUNT >= _gmaps.prints:
+            if counting >= _gmaps.prints:
                 filename = _gmaps.path + '/last_gps.txt'
                 with open(filename, 'w') as f:
                     f.write(str(_gmaps.gps))
                     f.write("COUNT: ")
                     f.write(COUNT)
                 sys.exit(1)
-            coord = str(_gmaps.gps)
 
+            coord = str(_gmaps.gps)
+            counting = counting + 1
             try:
                 executor.submit(_gmaps.get_map, coord)
             except Exception:
