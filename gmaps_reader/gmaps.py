@@ -27,7 +27,7 @@ class GMaps:
         params = self._params()
         params['center'] = gps
         res = requests.get(URL, params=params)
-        name = select_name()
+        name = select_name(self.prefix)
         filename = self.path + "/" +  name + '.' + self.quality
         print("Writing: %s" % name)
         save_image(filename, res.content)

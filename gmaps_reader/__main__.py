@@ -28,6 +28,7 @@ parser.add_argument("--scale", default=1, type=int , help="Image Scale (Default 
 parser.add_argument("--size", default='256x256', help="Image Size (Default = 256x256)")
 parser.add_argument("--zoom", type=int, default=19,
     help="Image Zoom (default = 19)")
+parser.add_argument("--prefix", default="default", help="Prefix name to save image (Default = default_*")
 args = vars(parser.parse_args())
 
 _gmaps = gmaps.GMaps(**args)
