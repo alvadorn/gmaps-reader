@@ -2,7 +2,10 @@ import argparse
 import gmaps
 from util.image import COUNT
 from concurrent.futures import ThreadPoolExecutor
+import logging
 import sys
+
+logging.getLogger().setLevel(logging.INFO)
 
 N_THREADS = 20
 
@@ -11,29 +14,37 @@ counting = 0
 parser = argparse.ArgumentParser(description="Get maps from GoogleMaps")
 parser.add_argument("api", help="Api KEY from Google Maps Static")
 parser.add_argument("--init_lat", type=float, default=0.0,
-    help="Initial Latitude")
+                    help="Initial Latitude")
 parser.add_argument("--init_lon", type=float, default=0.0,
-        help="Initial longitude")
+                    help="Initial longitude")
 parser.add_argument("--max_lat", type=float, default=0.0,
-    help="Max Latitude")
+                    help="Max Latitude")
 parser.add_argument("--max_lon", type=float, default=0.0,
-    help="Max Longitude")
+                    help="Max Longitude")
 parser.add_argument("--distance", type=int, default=100,
-    help="Distance between prints(default = 100m)")
+                    help="Distance between prints(default = 100m)")
 parser.add_argument("--prints", type=int, default=25000,
-    help="Max number of prints(default = 25000)")
-parser.add_argument("--path", default="/tmp", help="Path to Save Image (Default = tmp)")
-parser.add_argument("--quality", default='png', help="Image Quality (Default = png)")
-parser.add_argument("--scale", default=1, type=int , help="Image Scale (Default = 1)")
-parser.add_argument("--size", default='256x256', help="Image Size (Default = 256x256)")
+                    help="Max number of prints(default = 25000)")
+parser.add_argument("--path", default="/tmp",
+                    help="Path to Save Image (Default = tmp)")
+parser.add_argument("--quality", default='png',
+                    help="Image Quality (Default = png)")
+parser.add_argument("--scale", default=1, type=int,
+                    help="Image Scale (Default = 1)")
+parser.add_argument("--size", default='256x256',
+                    help="Image Size (Default = 256x256)")
 parser.add_argument("--zoom", type=int, default=19,
-    help="Image Zoom (default = 19)")
-parser.add_argument("--prefix", default="default", help="Prefix name to save image (Default = default_*")
+                    help="Image Zoom (default = 19)")
+parser.add_argument("--prefix", default="default",
+                    help="Prefix name to save image (Default = default_*")
 args = vars(parser.parse_args())
+
+logging.info("Initializing Maps Reader")
 
 _gmaps = gmaps.GMaps(**args)
 
-lat,lon = _gmaps.gps()
+lat, lon = _gmaps.gps()
+
 with ThreadPoolExecutor(max_workers=10) as executor:
     while lat > _gmaps.max_lat:
         while lon < _gmaps.max_lon:
